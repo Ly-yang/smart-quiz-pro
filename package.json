@@ -4,7 +4,6 @@
   "description": "智能题库练习系统 - 基于React的现代化在线学习平台",
   "main": "index.js",
   "type": "module",
-  {
   "scripts": {
     "dev": "vite",
     "build": "vite build",
