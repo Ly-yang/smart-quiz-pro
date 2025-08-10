@@ -12,10 +12,30 @@ export default [
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
+        // 浏览器环境
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
+        navigator: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        Blob: 'readonly',
+        prompt: 'readonly',
+        alert: 'readonly',
+        confirm: 'readonly',
+        // Node.js 环境（用于构建工具）
         process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        global: 'readonly',
+        Buffer: 'readonly',
+        // 应用特定
         __APP_VERSION__: 'readonly',
       },
       parserOptions: {
@@ -47,6 +67,10 @@ export default [
       }],
       'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
       'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+      // 允许在 case 块中声明变量
+      'no-case-declarations': 'off',
+      // 允许必要的转义字符
+      'no-useless-escape': 'warn',
     },
   },
 ]
