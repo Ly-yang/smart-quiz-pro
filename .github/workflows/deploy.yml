@@ -27,7 +27,7 @@ jobs:
         # cache-dependency-path: 'package-lock.json'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm install  # 暂时使用install，直到有package-lock.json
       
     - name: Run type check  # 新增：TypeScript检查
       run: npm run type-check
@@ -74,7 +74,7 @@ jobs:
         # cache-dependency-path: 'package-lock.json'
         
     - name: Install dependencies
-      run: npm ci
+      run: npm install  # 暂时使用install，直到有package-lock.json
       
     - name: Build project
       run: npm run build
