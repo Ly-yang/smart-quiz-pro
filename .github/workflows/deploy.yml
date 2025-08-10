@@ -22,9 +22,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        # 修复：指定缓存依赖路径
-        cache-dependency-path: 'package-lock.json'
+        # 暂时禁用缓存直到有package-lock.json
+        # cache: 'npm'
+        # cache-dependency-path: 'package-lock.json'
         
     - name: Install dependencies
       run: npm ci
@@ -69,8 +69,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
-        cache-dependency-path: 'package-lock.json'  # 修复：指定缓存依赖路径
+        # 暂时禁用缓存直到有package-lock.json
+        # cache: 'npm'
+        # cache-dependency-path: 'package-lock.json'
         
     - name: Install dependencies
       run: npm ci
