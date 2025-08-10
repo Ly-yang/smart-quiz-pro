@@ -5,13 +5,13 @@ import QuizResults from '../quiz/QuizResults'
 import useQuestions from '@/hooks/useQuestions'
 
 const PracticePage = () => {
-  const { state } = useQuiz()
+  const { state, dispatch } = useQuiz() // 添加 dispatch 解构
   const { currentQuestions } = useQuestions()
-
+  
   if (state.quizComplete) {
     return <QuizResults />
   }
-
+  
   if (currentQuestions.length === 0) {
     return (
       <div className="glass-card rounded-xl p-8 text-center">
@@ -43,7 +43,7 @@ const PracticePage = () => {
       </div>
     )
   }
-
+  
   return <QuestionCard />
 }
 
