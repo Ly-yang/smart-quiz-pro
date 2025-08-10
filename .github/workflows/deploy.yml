@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: ['18', '20']  # 修复：使用字符串格式，移除.x后缀
     
     steps:
     - name: Checkout code
@@ -23,33 +23,54 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        # 修复：指定缓存依赖路径
+        cache-dependency-path: 'package-lock.json'
         
     - name: Install dependencies
       run: npm ci
+      
+    - name: Run type check  # 新增：TypeScript检查
+      run: npm run type-check
       
     - name: Run linter
       run: npm run lint
       
     - name: Run tests
-      run: npm test
+      run: npm run test
       
     - name: Build project
       run: npm run build
+      
+    # 新增：上传构建产物供部署任务使用
+    - name: Upload build artifacts
+      if: matrix.node-version == '20' && github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: dist/
+        retention-days: 1
 
   build-and-deploy:
     needs: test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
+    # 添加必要的权限
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Use Node.js 18
+    - name: Use Node.js 20  # 修复：使用最新的LTS版本
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: '20'
         cache: 'npm'
+        cache-dependency-path: 'package-lock.json'  # 修复：指定缓存依赖路径
         
     - name: Install dependencies
       run: npm ci
@@ -57,16 +78,21 @@ jobs:
     - name: Build project
       run: npm run build
       
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
+    # GitHub Pages部署 - 使用官方action
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        path: './dist'
         
-    # Vercel deployment
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+        
+    # Vercel部署 - 更新到最新版本
     - name: Deploy to Vercel
-      if: github.ref == 'refs/heads/main'
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -75,15 +101,14 @@ jobs:
         vercel-project-id: ${{ secrets.PROJECT_ID }}
         working-directory: ./
         
-    # Netlify deployment
+    # Netlify部署 - 更新到最新版本
     - name: Deploy to Netlify
-      if: github.ref == 'refs/heads/main'
-      uses: nwtgck/actions-netlify@v2.0
+      uses: nwtgck/actions-netlify@v3.0
       with:
         publish-dir: './dist'
         production-branch: main
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        deploy-message: "Deploy from GitHub Actions"
+        deploy-message: "Deploy from GitHub Actions - ${{ github.sha }}"
         enable-pull-request-comment: false
         enable-commit-comment: true
         overwrites-pull-request-comment: true
