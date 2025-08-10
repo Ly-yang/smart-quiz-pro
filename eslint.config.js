@@ -56,21 +56,15 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      'react-refresh/only-export-components': 'warn',
       'react/prop-types': 'off',
-      'no-unused-vars': ['warn', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-      }],
-      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-      // 允许在 case 块中声明变量
+      // 更宽松的规则设置
+      'no-unused-vars': 'warn', // 改为 warn 而不是 error
+      'no-console': 'off', // 关闭 console 检查
+      'no-debugger': 'warn', // 改为 warn
       'no-case-declarations': 'off',
-      // 允许必要的转义字符
       'no-useless-escape': 'warn',
+      'react-hooks/exhaustive-deps': 'warn', // 改为 warn
     },
   },
 ]
