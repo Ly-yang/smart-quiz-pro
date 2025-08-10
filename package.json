@@ -15,8 +15,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage"
-  }
-},
+  },
   "keywords": [
     "react",
     "quiz",
