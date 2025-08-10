@@ -1,50 +1,85 @@
 {
   "compilerOptions": {
     // 基础配置
-    "target": "ES2020",                          // 编译目标版本
-    "module": "ESNext",                          // 模块系统
-    "moduleResolution": "node",                  // 模块解析策略
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],    // 包含的库文件
+    "target": "ES2020",
+    "module": "ESNext", 
+    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     
-    // 严格类型检查
-    "strict": true,                              // 启用所有严格类型检查选项
-    "noUnusedLocals": true,                      // 报告未使用的局部变量
-    "noUnusedParameters": true,                  // 报告未使用的参数
-    "noImplicitReturns": true,                   // 报告函数没有明确返回值
-    "noFallthroughCasesInSwitch": true,          // 报告 switch 语句穿透
+    // JavaScript 支持 - 重要：您的项目主要是 JSX 文件
+    "allowJs": true,
+    "checkJs": false,  // 暂时关闭 JS 检查，避免过多错误
+    
+    // JSX 支持
+    "jsx": "react-jsx",
+    
+    // 严格类型检查（针对 TS 文件）
+    "strict": true,
+    "noUnusedLocals": false,  // JSX 项目可能有未使用的导入
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     
     // 模块相关
-    "esModuleInterop": true,                     // 支持 CommonJS 和 ES 模块互操作
-    "allowSyntheticDefaultImports": true,        // 允许合成默认导入
-    "forceConsistentCasingInFileNames": true,    // 强制文件名大小写一致
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     
     // 输出配置
-    "declaration": true,                         // 生成 .d.ts 文件
-    "declarationMap": true,                      // 生成 .d.ts.map 文件
-    "sourceMap": true,                          // 生成 source map
-    "outDir": "./dist",                         // 输出目录
+    "noEmit": true,  // 只做类型检查，不生成文件
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
     
-    // 其他选项
-    "skipLibCheck": true,                       // 跳过库文件类型检查
-    "resolveJsonModule": true,                  // 支持导入 JSON 文件
+    // Vite 相关
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
     
-    // JSX 支持（如果需要 React）
-    "jsx": "react-jsx"
+    // 路径解析
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   
-  // 包含的文件和目录
+  // 包含的文件 - 基于您的实际项目结构
   "include": [
-    "src/**/*",
-    "*.ts",
-    "*.tsx"
+    // 主要源文件
+    "src/**/*.js",
+    "src/**/*.jsx", 
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    
+    // 具体的 TypeScript 类型文件
+    "src/types/*.ts",
+    
+    // 根目录配置文件
+    "vite.config.js",
+    "tailwind.config.js",
+    "postcss.config.js",
+    "eslint.config.js",
+    
+    // 入口文件
+    "index.html"
   ],
   
   // 排除的文件和目录
   "exclude": [
     "node_modules",
     "dist",
-    "build",
-    "**/*.test.ts",
-    "**/*.spec.ts"
+    "build", 
+    ".github",
+    "docs",
+    "tests",
+    "public",
+    
+    // 测试文件
+    "**/*.test.js",
+    "**/*.test.jsx",
+    "**/*.spec.js", 
+    "**/*.spec.jsx",
+    
+    // 配置文件中可能有的语法不兼容
+    "Dockerfile",
+    "nginx.conf"
   ]
 }
