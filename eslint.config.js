@@ -12,30 +12,10 @@ export default [
     languageOptions: {
       ecmaVersion: 2020,
       globals: {
-        // 浏览器环境
         window: 'readonly',
         document: 'readonly',
         console: 'readonly',
-        navigator: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        Blob: 'readonly',
-        prompt: 'readonly',
-        alert: 'readonly',
-        confirm: 'readonly',
-        // Node.js 环境（用于构建工具）
         process: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        global: 'readonly',
-        Buffer: 'readonly',
-        // 应用特定
         __APP_VERSION__: 'readonly',
       },
       parserOptions: {
@@ -56,15 +36,17 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': 'warn',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
       'react/prop-types': 'off',
-      // 更宽松的规则设置
-      'no-unused-vars': 'warn', // 改为 warn 而不是 error
-      'no-console': 'off', // 关闭 console 检查
-      'no-debugger': 'warn', // 改为 warn
-      'no-case-declarations': 'off',
-      'no-useless-escape': 'warn',
-      'react-hooks/exhaustive-deps': 'warn', // 改为 warn
+      'no-unused-vars': ['warn', { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+      }],
+      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     },
   },
 ]
